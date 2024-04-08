@@ -21,11 +21,11 @@
     </div>
 
     <footer>
-      <button aria-label=""></button>
-      <button aria-label=""></button>
-      <button aria-label=""></button>
-      <button aria-label=""></button>
-      <button aria-label=""></button>
+      <button class="is-undo" aria-label="undo"></button>
+      <button class="is-remove is-big" aria-label="remove"></button>
+      <button class="is-star" aria-label="star"></button>
+      <button class="is-big is-fav" aria-label="fav"></button>
+      <button class="is-flash" aria-label="flash"></button>
     </footer>
   </section>
 </main>
@@ -88,10 +88,41 @@
     align-items: center;
 
     & button {
+      background: url('./tinder-icons.webp') no-repeat;
+      background-position: 0px 0px;
+      background-size: 175px;
       height: 32px;
       width: 32px;
       border-radius: 50%;
-      border: 1px solid #ccc;
+      border: 0;
+      cursor: pointer;
+      transition: scale .3s ease;
+
+      &:hover {
+        scale: 1.3;
+      }
+
+      &.is-big {
+        background-size: 250px;
+        width: 48px;
+        height: 48px;
+      }
+
+      &.is-undo {
+        background-position: -140px;
+      }
+
+      &.is-remove {
+        background-position: -152px;
+      }
+
+      &.is-star {
+        background-position: -69px;
+      }
+
+      &.is-fav {
+        background-position: -46;
+      }
     }
   }
 
