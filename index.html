@@ -1,4 +1,4 @@
-<title>Projeto Tinder swipe</title>
+<title>Projecto Tinder swipe</title>
 <main>
   <section>
     <header>
@@ -141,33 +141,97 @@
       width: 100%;
       height: 100%;
       z-index: 2;
-    }
 
-    & img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+      &.go-left {
+        transform:translateX(-100%) rotate(-20deg) ;
+      }
 
-    & h2 {
-      color: white;
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: flex-end;
-      height: 100%;
-      width: 100%;
-      padding: 16px;
-      z-index: 3;
-      background: linear-gradient(to top, #00000088 20%, transparent 40%);
-    }
+      &.go-right {
+        transform:translateX(100%) rotate(20deg) ;
+      }
 
-    & span {
-      margin-left: 6px;
-      font-size: 18px;
-      line-height: 1.4;
-      font-weight: 400;
+      &.go-left, &.go-right {
+        transition: transform .3s, rotate ease;
+      }
+
+      &.reset {
+        transition: tranform .3s ease;
+        transform: translateX(0);
+      }
+    
+
+      & img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      & h2 {
+        color: white;
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        height: 100%;
+        width: 100%;
+        padding: 16px;
+        z-index: 3;
+        background: linear-gradient(to top, #00000088 20%, transparent 40%);
+      }
+
+      & span {
+        margin-left: 6px;
+        font-size: 18px;
+        line-height: 1.4;
+        font-weight: 400;
+      }
     }
   }
 
 </style>
+
+<script>
+  let isAnimating = false
+  let pullDeltaX = 0
+
+  function startDrag (event) {
+    if (isAnimating) return
+
+    const actualCard = event.target.closest('article')
+    const starX = event.pageX ?? event.touches[0].pageX
+
+    document.addEventListener('mousemove', onMove)
+    document.addEventListener('mouseup', onEnd)
+
+    document.addEventListener('touchmove', onMove, { passive: true })
+    document.addEventListener('touchend', onEnd, { passive: true })
+
+    function onMove (event) {
+      const currentX = event.pageX ?? event.touches[0].pageX
+      pullDeltaX = currentX - starX
+
+      if(pullDeltaX === 0) return
+
+      isAnimating = true
+      const deg = pullDeltaX / 14
+
+      actualCard.style.transform = `translateX(${pullDeltaX}px) rotate(${deg}deg)`
+      actualCard.style.cursor = 'grabbing'
+
+    }
+
+    function onEnd (event) {
+      document.removeEventListener('mousemove', onMove)
+      document.removeEventListener('mouseup', onEnd)
+
+      document.removeEventListener('touchmove', onMove)
+      document.removeEventListener('touchend', onEnd)
+
+    }
+  }
+
+  
+
+  document.addEventListener('mousedown', startDrag)
+  document.addEventListener('touchstart', startDrag, { passive: true })
+</script>
